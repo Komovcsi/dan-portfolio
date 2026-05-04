@@ -31,26 +31,3 @@ export interface ContactMessage {
   is_read: boolean;
   created_at: string;
 }
-
-export interface SiteSettings {
-  id: number;
-  photographer_name: string;
-  hero_badge: string;
-  hero_headline: string;
-  hero_subheadline: string;
-  stat1_value: string;
-  stat1_label: string;
-  stat2_value: string;
-  stat2_label: string;
-  stat3_value: string;
-  stat3_label: string;
-  about_bio_1: string;
-  about_bio_2: string;
-  about_bio_3: string;
-  about_photo_url: string | null;
-  about_camera: string;
-  about_favourite_lens: string;
-  about_based_in: string;
-  about_shooting_since: string;
-  updated_at: string;
-}

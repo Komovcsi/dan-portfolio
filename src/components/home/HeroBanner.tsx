@@ -1,15 +1,6 @@
 import Link from "next/link";
-import type { SiteSettings } from "@/types";
 
-interface Props {
-  settings: SiteSettings;
-}
-
-export default function HeroBanner({ settings }: Props) {
-  const words = settings.hero_headline.trim().split(" ");
-  const accent = words.pop()!;
-  const before = words.join(" ");
-
+export default function HeroBanner() {
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
       {/* Gradient background */}
@@ -29,18 +20,19 @@ export default function HeroBanner({ settings }: Props) {
       <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium mb-8">
           <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-          {settings.hero_badge}
+          Sports &amp; Party Photography
         </div>
 
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-tight mb-6">
-          {before}{" "}
+          Capturing the{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
-            {accent}
+            moment
           </span>
         </h1>
 
         <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-          {settings.hero_subheadline}
+          From the intensity of sport to the joy of celebration — every frame tells
+          a story worth remembering.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
