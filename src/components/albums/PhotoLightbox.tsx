@@ -2,24 +2,76 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Lightbox from "yet-another-react-lightbox";
+import Lightbox, { useLightboxState } from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import type { Photo } from "@/types";
 import { getCloudinaryUrl } from "@/lib/cloudinary-url";
+import { verifyAndDownloadPhoto } from "@/actions/downloads";
+import DownloadModal from "@/components/albums/DownloadModal";
+
+interface ExtendedSlide {
+  src: string;
+  alt: string;
+  cloudinary_public_id: string;
+  photo_id: string;
+  album_id: string;
+  album_name: string;
+}
 
 interface PhotoLightboxProps {
   photos: Photo[];
+  albumId: string;
+  albumName: string;
+  hasDownload: boolean;
 }
 
-export default function PhotoLightbox({ photos }: PhotoLightboxProps) {
+function LightboxDownloadButton({
+  onDownload,
+}: {
+  onDownload: (slide: ExtendedSlide) => void;
+}) {
+  const { currentIndex, slides } = useLightboxState();
+  const slide = slides[currentIndex] as unknown as ExtendedSlide;
+
+  return (
+    <button
+      type="button"
+      onClick={() => onDownload(slide)}
+      title="Download photo"
+      className="yarl__button"
+      style={{ filter: "none" }}
+    >
+      <svg
+        className="yarl__icon"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4 4m0 0l-4-4m4 4V4"
+        />
+      </svg>
+    </button>
+  );
+}
+
+export default function PhotoLightbox({ photos, albumId, albumName, hasDownload }: PhotoLightboxProps) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
+  const [downloadSlide, setDownloadSlide] = useState<ExtendedSlide | null>(null);
 
-  const slides = photos.map((p) => ({
+  const slides: ExtendedSlide[] = photos.map((p) => ({
     src: p.url.startsWith("http")
       ? p.url
       : getCloudinaryUrl(p.cloudinary_public_id, { width: 1600 }),
     alt: p.caption ?? "",
+    cloudinary_public_id: p.cloudinary_public_id,
+    photo_id: p.id,
+    album_id: albumId,
+    album_name: albumName,
   }));
 
   return (
@@ -64,11 +116,39 @@ export default function PhotoLightbox({ photos }: PhotoLightboxProps) {
         open={open}
         close={() => setOpen(false)}
         index={index}
-        slides={slides}
+        slides={slides as Parameters<typeof Lightbox>[0]["slides"]}
+        toolbar={
+          hasDownload
+            ? {
+                additionalButtons: [
+                  <LightboxDownloadButton
+                    key="download"
+                    onDownload={(slide) => setDownloadSlide(slide)}
+                  />,
+                ],
+              }
+            : undefined
+        }
         styles={{
           container: { backgroundColor: "rgba(0,0,0,0.95)" },
         }}
       />
+
+      {downloadSlide && (
+        <DownloadModal
+          title="Download photo"
+          onClose={() => setDownloadSlide(null)}
+          onVerify={(password) =>
+            verifyAndDownloadPhoto(
+              password,
+              downloadSlide.cloudinary_public_id,
+              downloadSlide.photo_id,
+              downloadSlide.album_id,
+              downloadSlide.album_name
+            )
+          }
+        />
+      )}
     </>
   );
 }
