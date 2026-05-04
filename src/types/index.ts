@@ -52,5 +52,7 @@ export interface SiteSettings {
   about_favourite_lens: string;
   about_based_in: string;
   about_shooting_since: string;
+  contact_email: string;
+  contact_response_time: string;
   updated_at: string;
 }
