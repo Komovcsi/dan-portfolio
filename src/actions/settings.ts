@@ -28,6 +28,9 @@ export async function updateSiteSettings(formData: FormData) {
     contact_email: formData.get("contact_email") as string,
     contact_response_time: formData.get("contact_response_time") as string,
     download_password: (formData.get("download_password") as string) || null,
+    instagram_url: (formData.get("instagram_url") as string) || null,
+    facebook_url: (formData.get("facebook_url") as string) || null,
+    tiktok_url: (formData.get("tiktok_url") as string) || null,
     updated_at: new Date().toISOString(),
   };
 

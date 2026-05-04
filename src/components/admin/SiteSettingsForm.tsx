@@ -258,6 +258,32 @@ export default function SiteSettingsForm({ settings }: Props) {
         </div>
       </section>
 
+      {/* Social Media */}
+      <section>
+        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 pb-2 border-b border-[#262626]">
+          Social Media
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { name: "instagram_url", label: "Instagram URL", placeholder: "https://instagram.com/yourhandle" },
+            { name: "facebook_url",  label: "Facebook URL",  placeholder: "https://facebook.com/yourpage" },
+            { name: "tiktok_url",    label: "TikTok URL",    placeholder: "https://tiktok.com/@yourhandle" },
+          ].map((field) => (
+            <div key={field.name}>
+              <label className="block text-sm text-gray-300 mb-1.5">{field.label}</label>
+              <input
+                name={field.name}
+                type="url"
+                defaultValue={(settings[field.name as keyof SiteSettings] as string) ?? ""}
+                placeholder={field.placeholder}
+                className="w-full bg-[#1a1a1a] border border-[#262626] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500 placeholder-gray-600"
+              />
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-gray-500 mt-2">Leave blank to hide the icon from the navbar, footer, and about page.</p>
+      </section>
+
       {/* Downloads */}
       <section>
         <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 pb-2 border-b border-[#262626]">

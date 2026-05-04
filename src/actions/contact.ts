@@ -1,6 +1,5 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/client";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function submitContactForm(formData: FormData) {
@@ -27,6 +26,35 @@ export async function submitContactForm(formData: FormData) {
 
   if (error) {
     return { error: "Failed to send message. Please try again." };
+  }
+
+  // Send email notification — non-fatal
+  try {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (apiKey) {
+      const { data: settings } = await supabase
+        .from("site_settings")
+        .select("contact_email, photographer_name")
+        .single();
+
+      if (settings?.contact_email) {
+        const { Resend } = await import("resend");
+        const resend = new Resend(apiKey);
+        await resend.emails.send({
+          from: "Portfolio <onboarding@resend.dev>",
+          to: settings.contact_email,
+          subject: `New message: ${subject.trim()}`,
+          text: [
+            `From: ${name.trim()} <${email.trim()}>`,
+            `Subject: ${subject.trim()}`,
+            "",
+            message.trim(),
+          ].join("\n"),
+        });
+      }
+    }
+  } catch {
+    // Email failure doesn't affect the user response
   }
 
   return { success: true };
