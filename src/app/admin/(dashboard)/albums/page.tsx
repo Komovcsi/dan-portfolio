@@ -57,8 +57,8 @@ export default async function AdminAlbumsPage() {
                     <div className="text-gray-500 text-xs mt-0.5">/{album.slug}</div>
                   </td>
                   <td className="px-6 py-4 hidden sm:table-cell">
-                    <Badge variant={album.category as "sports" | "parties"}>
-                      {album.category === "sports" ? "Sports" : "Parties"}
+                    <Badge variant={album.category}>
+                      {album.category.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
                     </Badge>
                   </td>
                   <td className="px-6 py-4 hidden md:table-cell">

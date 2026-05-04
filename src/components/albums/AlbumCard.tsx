@@ -52,8 +52,8 @@ export default function AlbumCard({ album }: AlbumCardProps) {
           <h3 className="font-semibold text-white group-hover:text-blue-400 transition-colors leading-snug">
             {album.name}
           </h3>
-          <Badge variant={album.category as "sports" | "parties"}>
-            {album.category === "sports" ? "Sports" : "Parties"}
+          <Badge variant={album.category}>
+            {album.category.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
           </Badge>
         </div>
         {album.description && (

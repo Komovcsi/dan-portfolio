@@ -49,8 +49,8 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <Badge variant={album.category as "sports" | "parties"}>
-              {album.category === "sports" ? "Sports" : "Parties"}
+            <Badge variant={album.category}>
+              {album.category.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
             </Badge>
             <span className="text-gray-500 text-sm">{albumPhotos.length} photos</span>
           </div>
