@@ -32,7 +32,7 @@ export default function DownloadModal({ title, onClose, onVerify }: DownloadModa
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[10000] flex items-center justify-center p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
