@@ -9,6 +9,7 @@ export async function createAlbum(formData: FormData) {
   const category = formData.get("category") as string;
   const description = (formData.get("description") as string)?.trim() || null;
   const is_featured = formData.get("is_featured") === "on";
+  const download_password = (formData.get("download_password") as string)?.trim() || null;
 
   if (!name || !category) {
     return { error: "Name and category are required." };
@@ -23,6 +24,7 @@ export async function createAlbum(formData: FormData) {
     category,
     description,
     is_featured,
+    download_password,
   });
 
   if (error) {
@@ -43,6 +45,7 @@ export async function updateAlbum(id: string, formData: FormData) {
   const category = formData.get("category") as string;
   const description = (formData.get("description") as string)?.trim() || null;
   const is_featured = formData.get("is_featured") === "on";
+  const download_password = (formData.get("download_password") as string)?.trim() || null;
 
   if (!name || !category) {
     return { error: "Name and category are required." };
@@ -54,6 +57,7 @@ export async function updateAlbum(id: string, formData: FormData) {
     category,
     description,
     is_featured,
+    download_password,
   }).eq("id", id);
 
   if (error) return { error: "Failed to update album." };
