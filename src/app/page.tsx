@@ -1,13 +1,16 @@
 import HeroBanner from "@/components/home/HeroBanner";
 import FeaturedGallery from "@/components/home/FeaturedGallery";
-import { getFeaturedAlbums } from "@/lib/supabase/server";
+import { getFeaturedAlbums, getSiteSettings } from "@/lib/supabase/server";
 
 export default async function HomePage() {
-  const featuredAlbums = await getFeaturedAlbums();
+  const [featuredAlbums, settings] = await Promise.all([
+    getFeaturedAlbums(),
+    getSiteSettings(),
+  ]);
 
   return (
     <>
-      <HeroBanner />
+      <HeroBanner settings={settings} />
       <FeaturedGallery albums={featuredAlbums} />
 
       {/* Stats section */}
@@ -15,9 +18,9 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
             {[
-              { label: "Sports events covered", value: "100+" },
-              { label: "Parties & celebrations", value: "50+" },
-              { label: "Photos captured", value: "10k+" },
+              { value: settings.stat1_value, label: settings.stat1_label },
+              { value: settings.stat2_value, label: settings.stat2_label },
+              { value: settings.stat3_value, label: settings.stat3_label },
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="text-4xl font-bold text-blue-400 mb-1">{stat.value}</p>

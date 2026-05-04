@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { getSiteSettings } from "@/lib/supabase/server";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,17 +20,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en" className={`${inter.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white antialiased">
-        <Navbar />
+        <Navbar name={settings.photographer_name} />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <Footer name={settings.photographer_name} />
       </body>
     </html>
   );

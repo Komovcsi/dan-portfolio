@@ -12,7 +12,11 @@ const navLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
-export default function Navbar() {
+interface Props {
+  name: string;
+}
+
+export default function Navbar({ name }: Props) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -21,7 +25,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="font-bold text-xl text-white tracking-tight">
-            Dan<span className="text-blue-400">.</span>
+            {name}<span className="text-blue-400">.</span>
           </Link>
 
           {/* Desktop nav */}

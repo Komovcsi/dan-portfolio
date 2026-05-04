@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import type { Album, Photo, ContactMessage } from "@/types";
+import type { Album, Photo, ContactMessage, SiteSettings } from "@/types";
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -97,6 +97,39 @@ export async function getContactMessages(): Promise<ContactMessage[]> {
     .select("*")
     .order("created_at", { ascending: false });
   return data ?? [];
+}
+
+const defaultSettings: SiteSettings = {
+  id: 1,
+  photographer_name: "Dan",
+  hero_badge: "Sports & Party Photography",
+  hero_headline: "Capturing the moment",
+  hero_subheadline:
+    "From the intensity of sport to the joy of celebration — every frame tells a story worth remembering.",
+  stat1_value: "100+",
+  stat1_label: "Sports events covered",
+  stat2_value: "50+",
+  stat2_label: "Parties & celebrations",
+  stat3_value: "10k+",
+  stat3_label: "Photos captured",
+  about_bio_1:
+    "I'm a passionate photographer with a love for capturing raw, unscripted moments — whether it's the decisive split-second of a sports play or the genuine laughter at a friend's party.",
+  about_bio_2:
+    "I started shooting as a hobby, borrowing a friend's camera at a local football match. Since then I've shot dozens of sport events — from school tournaments to regional championships — and countless gatherings that I'm proud to have documented.",
+  about_bio_3:
+    "My style leans toward natural light and authentic emotion. I believe the best photos don't feel staged — they feel like a memory you can hold in your hands.",
+  about_photo_url: null,
+  about_camera: "Sony A7 IV",
+  about_favourite_lens: "85mm f/1.8",
+  about_based_in: "Slovenia",
+  about_shooting_since: "2019",
+  updated_at: new Date().toISOString(),
+};
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("site_settings").select("*").single();
+  return data ?? defaultSettings;
 }
 
 export async function getDashboardStats() {
