@@ -120,11 +120,12 @@ export default function PhotoLightbox({ photos, albumId, albumName, hasDownload 
         toolbar={
           hasDownload
             ? {
-                additionalButtons: [
+                buttons: [
                   <LightboxDownloadButton
                     key="download"
                     onDownload={(slide) => setDownloadSlide(slide)}
                   />,
+                  "close",
                 ],
               }
             : undefined
