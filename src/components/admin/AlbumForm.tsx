@@ -76,6 +76,24 @@ export default function AlbumForm({ album, action }: AlbumFormProps) {
         />
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-1.5">
+          Download password{" "}
+          <span className="text-gray-600 font-normal">(optional)</span>
+        </label>
+        <input
+          name="download_password"
+          type="password"
+          autoComplete="new-password"
+          defaultValue={album?.download_password ?? ""}
+          className="w-full px-4 py-2.5 bg-[#1a1a1a] border border-[#262626] rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+          placeholder="Leave blank to use the global password"
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          Overrides the global download password for this album only.
+        </p>
+      </div>
+
       <div className="flex items-center gap-3">
         <input
           type="checkbox"
