@@ -41,7 +41,7 @@ export async function submitContactForm(formData: FormData) {
         const { Resend } = await import("resend");
         const resend = new Resend(apiKey);
         await resend.emails.send({
-          from: "Portfolio <onboarding@resend.dev>",
+          from: "Portfolio <contact@dan.komovc.dev>",
           to: settings.contact_email,
           subject: `New message: ${subject.trim()}`,
           text: [
