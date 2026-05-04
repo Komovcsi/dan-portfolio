@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Badge from "@/components/ui/Badge";
 import PhotoLightbox from "@/components/albums/PhotoLightbox";
+import DownloadAlbumButton from "@/components/albums/DownloadAlbumButton";
 import type { Metadata } from "next";
-import { getAlbumBySlug, getPhotosByAlbum } from "@/lib/supabase/server";
+import { getAlbumBySlug, getPhotosByAlbum, getSiteSettings } from "@/lib/supabase/server";
 
 interface AlbumPageProps {
   params: Promise<{ slug: string }>;
@@ -24,11 +25,12 @@ export async function generateMetadata({ params }: AlbumPageProps): Promise<Meta
 
 export default async function AlbumPage({ params }: AlbumPageProps) {
   const { slug } = await params;
-  const album = await getAlbumBySlug(slug);
+  const [album, settings] = await Promise.all([getAlbumBySlug(slug), getSiteSettings()]);
 
   if (!album) notFound();
 
   const albumPhotos = await getPhotosByAlbum(album.id);
+  const hasDownload = !!settings.download_password;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -57,6 +59,10 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
             <p className="text-gray-400 mt-2 max-w-xl">{album.description}</p>
           )}
         </div>
+
+        {hasDownload && albumPhotos.length > 0 && (
+          <DownloadAlbumButton albumId={album.id} albumName={album.name} />
+        )}
       </div>
 
       {albumPhotos.length === 0 ? (
@@ -65,7 +71,12 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
           <p className="text-sm">This album is empty.</p>
         </div>
       ) : (
-        <PhotoLightbox photos={albumPhotos} />
+        <PhotoLightbox
+          photos={albumPhotos}
+          albumId={album.id}
+          albumName={album.name}
+          hasDownload={hasDownload}
+        />
       )}
     </div>
   );

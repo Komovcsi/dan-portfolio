@@ -54,5 +54,15 @@ export interface SiteSettings {
   about_shooting_since: string;
   contact_email: string;
   contact_response_time: string;
+  download_password: string | null;
   updated_at: string;
+}
+
+export interface DownloadEvent {
+  id: string;
+  type: "photo" | "album";
+  album_id: string | null;
+  album_name: string | null;
+  photo_id: string | null;
+  created_at: string;
 }

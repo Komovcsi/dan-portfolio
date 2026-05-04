@@ -258,6 +258,27 @@ export default function SiteSettingsForm({ settings }: Props) {
         </div>
       </section>
 
+      {/* Downloads */}
+      <section>
+        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 pb-2 border-b border-[#262626]">
+          Downloads
+        </h3>
+        <div className="max-w-sm">
+          <label className="block text-sm text-gray-300 mb-1.5">Download password</label>
+          <input
+            name="download_password"
+            type="password"
+            defaultValue={settings.download_password ?? ""}
+            autoComplete="new-password"
+            className="w-full bg-[#1a1a1a] border border-[#262626] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"
+            placeholder="Leave blank to disable downloads"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Visitors must enter this password to download photos or albums. Leave blank to hide all download buttons.
+          </p>
+        </div>
+      </section>
+
       <div className="flex justify-end pt-2">
         <button
           type="submit"

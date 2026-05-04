@@ -27,6 +27,7 @@ export async function updateSiteSettings(formData: FormData) {
     about_shooting_since: formData.get("about_shooting_since") as string,
     contact_email: formData.get("contact_email") as string,
     contact_response_time: formData.get("contact_response_time") as string,
+    download_password: (formData.get("download_password") as string) || null,
     updated_at: new Date().toISOString(),
   };
 

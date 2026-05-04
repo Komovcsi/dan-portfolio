@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import type { Album, Photo, ContactMessage, SiteSettings } from "@/types";
+import type { Album, Photo, ContactMessage, SiteSettings, DownloadEvent } from "@/types";
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -125,6 +125,7 @@ const defaultSettings: SiteSettings = {
   about_shooting_since: "2019",
   contact_email: "dan@example.com",
   contact_response_time: "Within 24 hours",
+  download_password: null,
   updated_at: new Date().toISOString(),
 };
 
@@ -148,5 +149,41 @@ export async function getDashboardStats() {
     photoCount: photos.count ?? 0,
     messageCount: messages.count ?? 0,
     unreadCount: unread.count ?? 0,
+  };
+}
+
+export async function getDownloadStats() {
+  const { createAdminClient } = await import("@/lib/supabase/admin");
+  const supabase = createAdminClient();
+
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+  const startOfWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  const [total, thisMonth, thisWeek, recent] = await Promise.all([
+    supabase.from("download_events").select("id", { count: "exact", head: true }),
+    supabase.from("download_events").select("id", { count: "exact", head: true }).gte("created_at", startOfMonth),
+    supabase.from("download_events").select("id", { count: "exact", head: true }).gte("created_at", startOfWeek),
+    supabase.from("download_events").select("*").order("created_at", { ascending: false }).limit(20),
+  ]);
+
+  const events: DownloadEvent[] = recent.data ?? [];
+
+  // aggregate by album
+  const albumCounts: Record<string, { name: string; count: number }> = {};
+  for (const e of events) {
+    if (e.album_name) {
+      if (!albumCounts[e.album_name]) albumCounts[e.album_name] = { name: e.album_name, count: 0 };
+      albumCounts[e.album_name].count++;
+    }
+  }
+  const topAlbums = Object.values(albumCounts).sort((a, b) => b.count - a.count).slice(0, 5);
+
+  return {
+    total: total.count ?? 0,
+    thisMonth: thisMonth.count ?? 0,
+    thisWeek: thisWeek.count ?? 0,
+    recentEvents: events,
+    topAlbums,
   };
 }
