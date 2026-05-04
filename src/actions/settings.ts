@@ -25,6 +25,8 @@ export async function updateSiteSettings(formData: FormData) {
     about_favourite_lens: formData.get("about_favourite_lens") as string,
     about_based_in: formData.get("about_based_in") as string,
     about_shooting_since: formData.get("about_shooting_since") as string,
+    contact_email: formData.get("contact_email") as string,
+    contact_response_time: formData.get("contact_response_time") as string,
     updated_at: new Date().toISOString(),
   };
 
@@ -36,5 +38,6 @@ export async function updateSiteSettings(formData: FormData) {
 
   revalidatePath("/", "layout");
   revalidatePath("/about");
+  revalidatePath("/contact");
   return { success: true };
 }

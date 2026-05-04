@@ -123,6 +123,8 @@ const defaultSettings: SiteSettings = {
   about_favourite_lens: "85mm f/1.8",
   about_based_in: "Slovenia",
   about_shooting_since: "2019",
+  contact_email: "dan@example.com",
+  contact_response_time: "Within 24 hours",
   updated_at: new Date().toISOString(),
 };
 
