@@ -1,21 +1,30 @@
 export default function AlbumLoading() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 animate-pulse">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+      {/* Breadcrumb */}
       <div className="flex items-center gap-2 mb-8">
-        <div className="h-4 w-16 bg-[#1a1a1a] rounded" />
-        <div className="h-4 w-4 bg-[#1a1a1a] rounded" />
-        <div className="h-4 w-32 bg-[#1a1a1a] rounded" />
+        <div className="shimmer h-3.5 w-14 rounded-full" />
+        <div className="shimmer h-3.5 w-3.5 rounded-full" />
+        <div className="shimmer h-3.5 w-28 rounded-full" />
       </div>
-      <div className="mb-10">
-        <div className="h-8 w-64 bg-[#1a1a1a] rounded mb-3" />
-        <div className="h-4 w-96 bg-[#1a1a1a] rounded" />
+
+      {/* Album title area */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div className="space-y-3">
+          <div className="shimmer h-5 w-20 rounded-full" />
+          <div className="shimmer h-9 w-72 rounded-lg" />
+          <div className="shimmer h-4 w-52 rounded" />
+        </div>
+        <div className="shimmer h-10 w-36 rounded-xl" />
       </div>
+
+      {/* Photo masonry skeleton */}
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-        {Array.from({ length: 9 }).map((_, i) => (
+        {[320, 240, 380, 280, 420, 260, 350, 230, 390].map((h, i) => (
           <div
             key={i}
-            className="break-inside-avoid rounded-lg bg-[#1a1a1a]"
-            style={{ height: `${200 + (i % 3) * 60}px` }}
+            className="shimmer break-inside-avoid rounded-lg"
+            style={{ height: `${h}px` }}
           />
         ))}
       </div>

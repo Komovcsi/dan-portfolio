@@ -1,5 +1,7 @@
 import Link from "next/link";
 import AlbumCard from "@/components/albums/AlbumCard";
+import ScrollReveal from "@/components/ui/ScrollReveal";
+import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import type { Album } from "@/types";
 
 interface FeaturedGalleryProps {
@@ -11,7 +13,7 @@ export default function FeaturedGallery({ albums }: FeaturedGalleryProps) {
 
   return (
     <section className="py-20 px-4 sm:px-6 max-w-7xl mx-auto">
-      <div className="flex items-end justify-between mb-10">
+      <ScrollReveal className="flex items-end justify-between mb-10">
         <div>
           <p className="text-blue-400 text-sm font-medium uppercase tracking-widest mb-2">
             Portfolio
@@ -29,13 +31,15 @@ export default function FeaturedGallery({ albums }: FeaturedGalleryProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </Link>
-      </div>
+      </ScrollReveal>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {albums.map((album) => (
-          <AlbumCard key={album.id} album={album} />
+          <StaggerItem key={album.id}>
+            <AlbumCard album={album} />
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerReveal>
 
       <div className="sm:hidden mt-8 text-center">
         <Link

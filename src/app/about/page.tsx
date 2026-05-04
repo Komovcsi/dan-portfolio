@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { getSiteSettings } from "@/lib/supabase/server";
+import ScrollReveal from "@/components/ui/ScrollReveal";
+import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings();
@@ -29,7 +31,7 @@ export default async function AboutPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16">
-      <div className="mb-12">
+      <ScrollReveal className="mb-12">
         <p className="text-blue-400 text-sm font-medium uppercase tracking-widest mb-2">
           About
         </p>
@@ -37,7 +39,7 @@ export default async function AboutPage() {
           Hey, I&apos;m {s.photographer_name}.
         </h1>
         <div className="w-16 h-1 bg-blue-500 rounded-full" />
-      </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
         {/* Photo */}
@@ -70,19 +72,16 @@ export default async function AboutPage() {
             </p>
           ))}
 
-          <div className="pt-4 grid grid-cols-2 gap-4">
+          <StaggerReveal className="pt-4 grid grid-cols-2 gap-4" stagger={0.08}>
             {gearCards.map((item) => (
-              <div
-                key={item.label}
-                className="bg-[#111111] border border-[#262626] rounded-xl p-4"
-              >
+              <StaggerItem key={item.label} className="bg-[#111111] border border-[#262626] rounded-xl p-4">
                 <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
                   {item.label}
                 </p>
                 <p className="text-white font-semibold">{item.value}</p>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerReveal>
 
           {(s.instagram_url || s.facebook_url || s.tiktok_url) && (
             <div className="flex items-center gap-4 pt-2">

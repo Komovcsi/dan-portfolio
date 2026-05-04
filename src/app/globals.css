@@ -26,6 +26,62 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ─── Keyframe animations ──────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-down {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes blur-in {
+  from { opacity: 0; filter: blur(10px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+/* Reusable animation utility classes */
+.anim-fade-up {
+  opacity: 0;
+  animation: fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.anim-fade-down {
+  opacity: 0;
+  animation: fade-down 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.anim-fade-in {
+  opacity: 0;
+  animation: fade-in 0.6s ease forwards;
+}
+.anim-blur-in {
+  opacity: 0;
+  animation: blur-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Skeleton shimmer */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #1a1a1a 25%,
+    #242424 50%,
+    #1a1a1a 75%
+  );
+  background-size: 400px 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;

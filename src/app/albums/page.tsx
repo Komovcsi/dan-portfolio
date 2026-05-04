@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import AlbumCard from "@/components/albums/AlbumCard";
 import CategoryFilter from "@/components/albums/CategoryFilter";
 import { getAlbums, getCategories } from "@/lib/supabase/server";
+import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
 interface AlbumsPageProps {
   searchParams: Promise<{ category?: string }>;
@@ -42,11 +43,13 @@ export default async function AlbumsPage({ searchParams }: AlbumsPageProps) {
           <p className="text-sm">Check back soon — photos are on the way.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {albums.map((album) => (
-            <AlbumCard key={album.id} album={album} />
+            <StaggerItem key={album.id}>
+              <AlbumCard album={album} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerReveal>
       )}
     </div>
   );

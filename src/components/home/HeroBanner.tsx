@@ -27,23 +27,39 @@ export default function HeroBanner({ settings }: Props) {
       />
 
       <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium mb-8">
+        {/* Badge — fades down */}
+        <div
+          className="anim-fade-down inline-flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium mb-8"
+          style={{ animationDelay: "0ms" }}
+        >
           <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
           {settings.hero_badge}
         </div>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-tight mb-6">
+        {/* Headline — blurs in */}
+        <h1
+          className="anim-blur-in text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-tight mb-6"
+          style={{ animationDelay: "150ms" }}
+        >
           {before}{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
             {accent}
           </span>
         </h1>
 
-        <p className="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+        {/* Subheadline — fades up */}
+        <p
+          className="anim-fade-up text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+          style={{ animationDelay: "300ms" }}
+        >
           {settings.hero_subheadline}
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        {/* Buttons — fades up */}
+        <div
+          className="anim-fade-up flex flex-col sm:flex-row items-center justify-center gap-4"
+          style={{ animationDelay: "450ms" }}
+        >
           <Link
             href="/albums"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-colors text-base"
