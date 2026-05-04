@@ -30,7 +30,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
   if (!album) notFound();
 
   const albumPhotos = await getPhotosByAlbum(album.id);
-  const hasDownload = !!settings.download_password;
+  const hasDownload = !!(album.download_password ?? settings.download_password);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">

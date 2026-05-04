@@ -3,13 +3,14 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getAlbumZipUrl, getPhotoDownloadUrl } from "@/lib/cloudinary";
 
-async function getDownloadPassword(): Promise<string | null> {
+async function resolveDownloadPassword(albumId: string): Promise<string | null> {
   const supabase = createAdminClient();
-  const { data } = await supabase
-    .from("site_settings")
-    .select("download_password")
-    .single();
-  return data?.download_password ?? null;
+  const [settings, album] = await Promise.all([
+    supabase.from("site_settings").select("download_password").single(),
+    supabase.from("albums").select("download_password").eq("id", albumId).single(),
+  ]);
+  // Album-specific password takes priority over the global one
+  return album.data?.download_password ?? settings.data?.download_password ?? null;
 }
 
 async function logDownloadEvent(params: {
@@ -34,7 +35,7 @@ export async function verifyAndDownloadPhoto(
   albumId: string,
   albumName: string
 ): Promise<{ url?: string; error?: string }> {
-  const storedPassword = await getDownloadPassword();
+  const storedPassword = await resolveDownloadPassword(albumId);
 
   if (!storedPassword) return { error: "Downloads are not enabled." };
   if (password !== storedPassword) return { error: "Incorrect password." };
@@ -49,7 +50,7 @@ export async function verifyAndDownloadAlbum(
   albumId: string,
   albumName: string
 ): Promise<{ url?: string; error?: string }> {
-  const storedPassword = await getDownloadPassword();
+  const storedPassword = await resolveDownloadPassword(albumId);
 
   if (!storedPassword) return { error: "Downloads are not enabled." };
   if (password !== storedPassword) return { error: "Incorrect password." };

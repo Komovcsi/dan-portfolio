@@ -7,6 +7,7 @@ export interface Album {
   category: "sports" | "parties";
   is_featured: boolean;
   display_order: number;
+  download_password: string | null;
   created_at: string;
   photos?: Photo[];
 }
