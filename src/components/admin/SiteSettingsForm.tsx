@@ -230,6 +230,34 @@ export default function SiteSettingsForm({ settings }: Props) {
         </div>
       </section>
 
+      {/* Contact */}
+      <section>
+        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 pb-2 border-b border-[#262626]">
+          Contact Page
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm text-gray-300 mb-1.5">Email address</label>
+            <input
+              name="contact_email"
+              type="email"
+              defaultValue={settings.contact_email}
+              className="w-full bg-[#1a1a1a] border border-[#262626] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"
+            />
+            <p className="text-xs text-gray-500 mt-1">Displayed publicly on the contact page.</p>
+          </div>
+          <div>
+            <label className="block text-sm text-gray-300 mb-1.5">Response time</label>
+            <input
+              name="contact_response_time"
+              defaultValue={settings.contact_response_time}
+              className="w-full bg-[#1a1a1a] border border-[#262626] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"
+            />
+            <p className="text-xs text-gray-500 mt-1">e.g. &quot;Within 24 hours&quot;</p>
+          </div>
+        </div>
+      </section>
+
       <div className="flex justify-end pt-2">
         <button
           type="submit"
