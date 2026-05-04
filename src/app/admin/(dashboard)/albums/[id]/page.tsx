@@ -4,7 +4,7 @@ import Image from "next/image";
 import AlbumForm from "@/components/admin/AlbumForm";
 import CloudinaryUploader from "@/components/admin/CloudinaryUploader";
 import PhotoManager from "@/components/admin/PhotoManager";
-import { getAlbumById, getPhotosByAlbum } from "@/lib/supabase/server";
+import { getAlbumById, getPhotosByAlbum, getCategories } from "@/lib/supabase/server";
 import { updateAlbum } from "@/actions/albums";
 
 interface EditAlbumPageProps {
@@ -15,9 +15,10 @@ export const metadata = { title: "Edit Album | Admin" };
 
 export default async function EditAlbumPage({ params }: EditAlbumPageProps) {
   const { id } = await params;
-  const [album, photos] = await Promise.all([
+  const [album, photos, categories] = await Promise.all([
     getAlbumById(id),
     getPhotosByAlbum(id),
+    getCategories(),
   ]);
 
   if (!album) notFound();
@@ -49,7 +50,7 @@ export default async function EditAlbumPage({ params }: EditAlbumPageProps) {
         {/* Album settings */}
         <div className="lg:col-span-2 bg-[#111111] border border-[#262626] rounded-xl p-6">
           <h2 className="text-lg font-semibold text-white mb-5">Album Settings</h2>
-          <AlbumForm album={album} action={updateAction} />
+          <AlbumForm album={album} categories={categories} action={updateAction} />
         </div>
 
         {/* Cover photo */}

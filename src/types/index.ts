@@ -1,10 +1,18 @@
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  display_order: number;
+  created_at: string;
+}
+
 export interface Album {
   id: string;
   name: string;
   slug: string;
   description: string | null;
   cover_image_url: string | null;
-  category: "sports" | "parties";
+  category: string;
   is_featured: boolean;
   display_order: number;
   download_password: string | null;
@@ -56,6 +64,9 @@ export interface SiteSettings {
   contact_email: string;
   contact_response_time: string;
   download_password: string | null;
+  instagram_url: string | null;
+  facebook_url: string | null;
+  tiktok_url: string | null;
   updated_at: string;
 }
 

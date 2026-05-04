@@ -1,6 +1,20 @@
+import type { Metadata } from "next";
 import HeroBanner from "@/components/home/HeroBanner";
 import FeaturedGallery from "@/components/home/FeaturedGallery";
 import { getFeaturedAlbums, getSiteSettings } from "@/lib/supabase/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSiteSettings();
+  return {
+    title: `${s.photographer_name} — ${s.hero_badge}`,
+    description: s.hero_subheadline,
+    openGraph: {
+      title: `${s.photographer_name} — ${s.hero_badge}`,
+      description: s.hero_subheadline,
+      images: s.about_photo_url ? [{ url: s.about_photo_url }] : [],
+    },
+  };
+}
 
 export default async function HomePage() {
   const [featuredAlbums, settings] = await Promise.all([

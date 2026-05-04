@@ -3,16 +3,17 @@
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import type { Album } from "@/types";
+import type { Album, Category } from "@/types";
 
 interface AlbumFormProps {
   album?: Album;
+  categories: Category[];
   action: (formData: FormData) => Promise<{ error?: string; success?: boolean; slug?: string }>;
 }
 
 const initialState = { error: undefined as string | undefined, success: false };
 
-export default function AlbumForm({ album, action }: AlbumFormProps) {
+export default function AlbumForm({ album, categories, action }: AlbumFormProps) {
   const router = useRouter();
   const [state, formAction, pending] = useActionState(
     async (_prev: typeof initialState, formData: FormData) => {
@@ -54,11 +55,14 @@ export default function AlbumForm({ album, action }: AlbumFormProps) {
         <select
           name="category"
           required
-          defaultValue={album?.category ?? "sports"}
+          defaultValue={album?.category ?? categories[0]?.slug ?? ""}
           className="w-full px-4 py-2.5 bg-[#1a1a1a] border border-[#262626] rounded-lg text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
         >
-          <option value="sports">Sports</option>
-          <option value="parties">Parties</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.slug}>
+              {cat.name}
+            </option>
+          ))}
         </select>
       </div>
 

@@ -2,10 +2,17 @@ import type { Metadata } from "next";
 import ContactForm from "@/components/contact/ContactForm";
 import { getSiteSettings } from "@/lib/supabase/server";
 
-export const metadata: Metadata = {
-  title: "Contact | Dan Photography",
-  description: "Get in touch with Dan for bookings, questions, or collaborations.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSiteSettings();
+  return {
+    title: `Contact — ${s.photographer_name}`,
+    description: `Get in touch with ${s.photographer_name}. Response time: ${s.contact_response_time}.`,
+    openGraph: {
+      title: `Contact — ${s.photographer_name}`,
+      description: `Get in touch with ${s.photographer_name}. Response time: ${s.contact_response_time}.`,
+    },
+  };
+}
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();

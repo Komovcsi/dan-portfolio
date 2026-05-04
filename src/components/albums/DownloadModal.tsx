@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useRef, useState, useTransition, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface DownloadModalProps {
   title: string;
@@ -11,7 +12,12 @@ interface DownloadModalProps {
 export default function DownloadModal({ title, onClose, onVerify }: DownloadModalProps) {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [mounted, setMounted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,12 +36,14 @@ export default function DownloadModal({ title, onClose, onVerify }: DownloadModa
     });
   }
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div
       className="fixed inset-0 z-[10000] flex items-center justify-center p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
 
       <div className="relative bg-[#111111] border border-[#262626] rounded-2xl p-6 w-full max-w-sm shadow-2xl">
         <div className="flex items-center justify-between mb-5">
@@ -103,6 +111,7 @@ export default function DownloadModal({ title, onClose, onVerify }: DownloadModa
           </button>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

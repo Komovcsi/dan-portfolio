@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import type { Album, Photo, ContactMessage, SiteSettings, DownloadEvent } from "@/types";
+import type { Album, Photo, ContactMessage, SiteSettings, DownloadEvent, Category } from "@/types";
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -79,6 +79,15 @@ export async function getAllAlbumsForAdmin(): Promise<Album[]> {
   return data ?? [];
 }
 
+export async function getCategories(): Promise<Category[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("categories")
+    .select("*")
+    .order("display_order", { ascending: true });
+  return data ?? [];
+}
+
 export async function getAlbumById(id: string): Promise<Album | null> {
   const supabase = await createClient();
   const { data } = await supabase
@@ -126,6 +135,9 @@ const defaultSettings: SiteSettings = {
   contact_email: "dan@example.com",
   contact_response_time: "Within 24 hours",
   download_password: null,
+  instagram_url: null,
+  facebook_url: null,
+  tiktok_url: null,
   updated_at: new Date().toISOString(),
 };
 

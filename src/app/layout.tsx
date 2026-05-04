@@ -26,13 +26,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const settings = await getSiteSettings();
+  const socialLinks = {
+    instagram: settings.instagram_url ?? undefined,
+    facebook: settings.facebook_url ?? undefined,
+    tiktok: settings.tiktok_url ?? undefined,
+  };
 
   return (
     <html lang="en" className={`${inter.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white antialiased">
-        <Navbar name={settings.photographer_name} />
+        <Navbar name={settings.photographer_name} socialLinks={socialLinks} />
         <main className="flex-1">{children}</main>
-        <Footer name={settings.photographer_name} />
+        <Footer name={settings.photographer_name} socialLinks={socialLinks} />
       </body>
     </html>
   );
